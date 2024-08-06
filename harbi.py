@@ -76,7 +76,7 @@ def change_username(session_id, device_id, iid, last_username, new_username):
 def main():
     device_id = str(random.randint(777777788, 999999999999))
     iid = str(random.randint(777777788, 999999999999))
-    session_id = "sessionid"
+    session_id = input("Enter the sessionid : ")
 
     user = get_profile(session_id, device_id, iid)
     if user != "None":
