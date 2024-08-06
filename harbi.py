@@ -83,7 +83,8 @@ def main():
         print(f"Your current TikTok username is: {user}")
         new_username = input("Enter the new username you wish to set: ")
         print(change_username(session_id, device_id, iid, user, new_username))
-
+    else:
+        print("not wrok sessionid")
 
 if __name__ == "__main__":
     main()
