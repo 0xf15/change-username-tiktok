@@ -239,16 +239,21 @@ def change_username(session_id, device_id, iid, last_username, new_username):
         return "Failed to change username: " + str(result)
 
 
-def main():
+def main(session_id=0): # Retry if requested username doesnt work
     device_id = str(random.randint(777777788, 999999999999))
     iid = str(random.randint(777777788, 999999999999))
-    session_id = input("Enter the sessionid : ")
+    if session_id:
+        pass
+    else :
+        session_id = input("Enter the sessionid : ")
 
     user = get_profile(session_id, device_id, iid)
     if user != "None":
         print(f"Your current TikTok username is: {user}")
         new_username = input("Enter the new username you wish to set: ")
-        print(change_username(session_id, device_id, iid, user, new_username))
+        change = change_username(session_id, device_id, iid, user, new_username)
+        if "fatal_item_ids" in change: # This is found within errors
+            main(session_id)
     else:
         print("not wrok sessionid")
 
