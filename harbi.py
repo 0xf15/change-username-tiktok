@@ -276,7 +276,7 @@ def change_username_us(session_id, device_id, iid, last_username, new_username):
     """Attempt to change a TikTok username (US version)."""
     data = f"unique_id={quote(new_username)}&device_id={device_id}"
     parm = (f"aid=364225&sdk_version=1012000&refresh_num=11&version_code=30.0.0&language=en-SA"
-            "&display_density=1284*2778&device_id=1234567891&channel=AppStore&click_banner=32&mcc_mnc=42001"
+            "&display_density=1284*2778&device_id=12345678910&channel=AppStore&click_banner=32&mcc_mnc=42001"
             "&show_limit=0&resolution=1284*2778&aid=1233&version_name=9.1.1&os=ios&update_version_code=91115"
             "&access=WIFI&carrier=stc&ac=WIFI&os_version=17.3&is_cold_start=0&reason=0&device_platform=iphone"
             "&device_brand=AppleInc.&device_type=iPhone13,4")
