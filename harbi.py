@@ -262,7 +262,7 @@ def main():
     session_id = input("Enter session ID: ")
 
     last_username = get_profile(session_id, device_id, iid)
-    if last_username != "None": #tiktokthailand 
+    if last_username != "None": #ء 
         print(f"Your current TikTok username is: {last_username}")
         new_username = input("Enter the new username you wish to set: ")
         print(change_username(session_id, device_id, iid,last_username, new_username))
