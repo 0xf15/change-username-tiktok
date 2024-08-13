@@ -206,15 +206,8 @@ def get_stub(data):
 def get_profile(session_id, device_id, iid):
     """Retrieve the current TikTok username for a given session, device, and iid."""
     try:
-        data = None
-        parm = (
-            f"device_id={device_id}&iid={iid}&id=kaa&version_code=34.0.0&language=en"
-            "&app_name=lite&app_version=34.0.0&carrier_region=SA&tz_offset=10800&mcc_mnc=42001"
-            "&locale=en&sys_region=SA&aid=473824&screen_width=1284&os_api=18&ac=WIFI&os_version=17.3"
-            "&app_language=en&tz_name=Asia/Riyadh&carrier_region1=SA&build_number=340002&device_platform=iphone"
-            "&device_type=iPhone13,4"
-        )
-        url = f"https://api16.tiktokv.com/aweme/v1/user/profile/self/?{parm}"
+        
+        url = f"https://api.tiktokv.com/passport/account/info/v2/?id=kaa&version_code=34.0.0&language=en&app_name=lite&app_version=34.0.0&carrier_region=SA&device_id=7256623439258404357&tz_offset=10800&mcc_mnc=42001&locale=en&sys_region=SA&aid=473824&screen_width=1284&os_api=18&ac=WIFI&os_version=17.3&app_language=en&tz_name=Asia/Riyadh&carrier_region1=SA&build_number=340002&device_platform=iphone&iid=7353686754157692689&device_type=iPhone13,4"
         headers = {
             "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
             "Cookie": f"sessionid={session_id}",
@@ -222,8 +215,9 @@ def get_profile(session_id, device_id, iid):
             "user-agent": "com.zhiliaoapp.musically/432424234 (Linux; U; Android 5; en; fewfwdw; Build/PI;tt-ok/3.12.13.1)",
   
         }
+        
         response = requests.get(url, headers=headers, cookies={"sessionid": session_id})
-        return response.json()["user"]["unique_id"]
+        return response.json()["data"]["username"]
     except Exception as e:
         return "None"
 
@@ -240,7 +234,7 @@ def change_username(session_id, device_id, iid, last_username, new_username):
     
         
     sig = run(parm, md5(data.encode("utf-8")).hexdigest() if data else None,None)  
-    url = f"https://api16.tiktokv.com/aweme/v1/commit/user/?{parm}"
+    url = f"https://api.tiktokv.com/aweme/v1/commit/user/?{parm}"
     headers = {
         "Connection": "keep-alive",
         "User-Agent": "Whee 1.1.0 rv:11005 (iPad; iOS 17.4.1; en_SA@calendar=gregorian) Cronet",
@@ -251,10 +245,11 @@ def change_username(session_id, device_id, iid, last_username, new_username):
     headers.update(sig)
     response = requests.post(url, data=data, headers=headers)
     result = response.text
-    if "unique_id" in result and check_is_changed(
-        last_username, session_id, device_id, iid
-    ):
-        return "Username change successful."
+    if "unique_id" in result :
+        if(check_is_changed(last_username, session_id, device_id, iid)):
+            return "Username change successful."
+        else:
+            return "Failed to change username: " + str(result)
     else:
         return "Failed to change username: " + str(result)
 
@@ -264,13 +259,13 @@ def main():
     device_id = str(random.randint(777777788, 999999999999))
     iid = str(random.randint(777777788, 999999999999))
 
-    session_id = input("Enter the sessionid: ")
+    session_id = input("Enter session ID: ")
 
-    user = get_profile(session_id, device_id, iid)
-    if user != "None":
-        print(f"Your current TikTok username is: {user}")
+    last_username = get_profile(session_id, device_id, iid)
+    if last_username != "None": #tiktokthailand 
+        print(f"Your current TikTok username is: {last_username}")
         new_username = input("Enter the new username you wish to set: ")
-        print(change_username(session_id, device_id, iid, user, new_username))
+        print(change_username(session_id, device_id, iid,last_username, new_username))
 
     else:
         print("Invalid session ID or other error.")
